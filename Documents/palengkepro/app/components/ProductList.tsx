@@ -8,7 +8,7 @@ interface ProductListProps {
 
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto flex items-center" >
       <table className="table w-full">
         <thead>
           <tr>
@@ -16,7 +16,6 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
             <th>Supplier</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Isle Number</th>
             <th>Actions</th>
           </tr>
         </thead>

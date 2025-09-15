@@ -5,7 +5,6 @@ import Modal from "./Modal";
 import { FormEventHandler, useState } from "react";
 import { addProduct } from "../api/products/products";
 import { useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
 
 const AddProduct = () => {
   const router = useRouter();
@@ -14,26 +13,29 @@ const AddProduct = () => {
   const [supplier, setSupplier] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
-  const [isleNumber, setIsleNumber] = useState<string>("");
 
-  const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
+  e.preventDefault();
+  try {
     await addProduct({
-      id: uuidv4(),
       product_name: productName,
       supplier,
       price,
       quantity,
-      isle_number: isleNumber,
     });
+
     setProductName("");
     setSupplier("");
     setPrice(0);
     setQuantity(0);
-    setIsleNumber("");
     setModalOpen(false);
     router.refresh();
-  };
+  } catch (err: any) {
+    console.error("Add product failed:", err);
+    alert("Failed to add product: " + err.message);
+  }
+};
+
 
   return (
     <div>
@@ -44,7 +46,7 @@ const AddProduct = () => {
         Add new product <AiOutlinePlus className="ml-2" size={18} />
       </button>
 
-      {/* <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+      <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmitNewProduct}>
           <h3 className="font-bold text-lg">Add new product</h3>
           <div className="modal-action flex flex-col gap-2">
@@ -76,19 +78,12 @@ const AddProduct = () => {
               placeholder="Quantity"
               className="input input-bordered w-full"
             />
-            <input
-              value={isleNumber}
-              onChange={(e) => setIsleNumber(e.target.value)}
-              type="text"
-              placeholder="Isle number"
-              className="input input-bordered w-full"
-            />
             <button type="submit" className="btn">
               Submit
             </button>
           </div>
         </form>
-      </Modal> */}
+      </Modal>
     </div>
   );
 };

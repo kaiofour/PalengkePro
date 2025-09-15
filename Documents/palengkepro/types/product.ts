@@ -1,9 +1,8 @@
 // types/product.ts
 export interface IProduct {
-  id: string
+  id?: string
   product_name: string
   supplier: string
   price: number
   quantity: number
-  isle_number: string
 }

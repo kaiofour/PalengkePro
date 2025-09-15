@@ -19,13 +19,13 @@ export default async function Home() {
       <AddProduct />
 
       {/* Product list */}
-      {/* <div className="mt-6">
+      <div className="mt-6">
         {products && products.length > 0 ? (
           <ProductList products={products as IProduct[]} />
         ) : (
           <p className="text-gray-500">No products found.</p>
         )}
-      </div> */}
+      </div>
     </main>
   );
 }

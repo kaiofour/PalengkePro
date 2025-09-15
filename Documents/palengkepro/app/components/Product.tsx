@@ -20,7 +20,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const [supplier, setSupplier] = useState(product.supplier);
   const [price, setPrice] = useState(product.price);
   const [quantity, setQuantity] = useState(product.quantity);
-  const [isleNumber, setIsleNumber] = useState(product.isle_number);
 
   const handleSubmitEditProduct: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -30,7 +29,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       supplier,
       price,
       quantity,
-      isle_number: isleNumber,
     });
     setOpenModalEdit(false);
     router.refresh();
@@ -48,7 +46,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       <td>{product.supplier}</td>
       <td>{product.price}</td>
       <td>{product.quantity}</td>
-      <td>{product.isle_number}</td>
       <td className="flex gap-5">
         <FiEdit
           onClick={() => setOpenModalEdit(true)}
@@ -86,13 +83,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 type="number"
                 placeholder="Quantity"
-                className="input input-bordered w-full"
-              />
-              <input
-                value={isleNumber}
-                onChange={(e) => setIsleNumber(e.target.value)}
-                type="text"
-                placeholder="Isle number"
                 className="input input-bordered w-full"
               />
               <button type="submit" className="btn">
