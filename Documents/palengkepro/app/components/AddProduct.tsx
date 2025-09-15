@@ -1,0 +1,96 @@
+"use client";
+
+import { AiOutlinePlus } from "react-icons/ai";
+import Modal from "./Modal";
+import { FormEventHandler, useState } from "react";
+import { addProduct } from "../api/products/products";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+
+const AddProduct = () => {
+  const router = useRouter();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [productName, setProductName] = useState<string>("");
+  const [supplier, setSupplier] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(0);
+  const [isleNumber, setIsleNumber] = useState<string>("");
+
+  const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    await addProduct({
+      id: uuidv4(),
+      product_name: productName,
+      supplier,
+      price,
+      quantity,
+      isle_number: isleNumber,
+    });
+    setProductName("");
+    setSupplier("");
+    setPrice(0);
+    setQuantity(0);
+    setIsleNumber("");
+    setModalOpen(false);
+    router.refresh();
+  };
+
+  return (
+    <div>
+      <button
+        onClick={() => setModalOpen(true)}
+        className="btn btn-primary w-full"
+      >
+        Add new product <AiOutlinePlus className="ml-2" size={18} />
+      </button>
+
+      {/* <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+        <form onSubmit={handleSubmitNewProduct}>
+          <h3 className="font-bold text-lg">Add new product</h3>
+          <div className="modal-action flex flex-col gap-2">
+            <input
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              type="text"
+              placeholder="Product name"
+              className="input input-bordered w-full"
+            />
+            <input
+              value={supplier}
+              onChange={(e) => setSupplier(e.target.value)}
+              type="text"
+              placeholder="Supplier"
+              className="input input-bordered w-full"
+            />
+            <input
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              type="number"
+              placeholder="Price"
+              className="input input-bordered w-full"
+            />
+            <input
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              type="number"
+              placeholder="Quantity"
+              className="input input-bordered w-full"
+            />
+            <input
+              value={isleNumber}
+              onChange={(e) => setIsleNumber(e.target.value)}
+              type="text"
+              placeholder="Isle number"
+              className="input input-bordered w-full"
+            />
+            <button type="submit" className="btn">
+              Submit
+            </button>
+          </div>
+        </form>
+      </Modal> */}
+    </div>
+  );
+};
+
+export default AddProduct;
