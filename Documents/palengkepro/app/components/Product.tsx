@@ -24,7 +24,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const handleSubmitEditProduct: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     await editProduct({
-      id: product.id,
+      product_id: product.product_id,
       product_name: productName,
       supplier,
       price,
@@ -41,7 +41,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   };
 
   return (
-    <tr key={product.id}>
+    <tr>
       <td>{product.product_name}</td>
       <td>{product.supplier}</td>
       <td>{product.price}</td>
@@ -79,7 +79,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                 className="input input-bordered w-full"
               />
               <input
-                value={quantity}
+                value={quantity ?? ""}
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 type="number"
                 placeholder="Quantity"
@@ -101,7 +101,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         <Modal modalOpen={openModalDeleted} setModalOpen={setOpenModalDeleted}>
           <h3 className="text-lg">Are you sure you want to delete this product?</h3>
           <div className="modal-action">
-            <button onClick={() => handleDeleteProduct(product.id)} className="btn">
+            <button onClick={() => handleDeleteProduct(product.product_id)} className="btn">
               Yes
             </button>
           </div>

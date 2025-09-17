@@ -21,7 +21,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <Product key={product.id} product={product} />
+            <Product key={product.product_id} product={product} />
           ))}
         </tbody>
       </table>

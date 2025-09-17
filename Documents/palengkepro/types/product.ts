@@ -1,6 +1,6 @@
 // types/product.ts
 export interface IProduct {
-  id?: string
+  product_id?: string
   product_name: string
   supplier: string
   price: number
