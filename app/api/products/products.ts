@@ -2,7 +2,7 @@
 import { supabase } from "@/lib/supabaseClient"
 import { IProduct } from "@/types/product"
 
-// ✅ Get all products
+//  Get all products
 export const getProducts = async (): Promise<IProduct[]> => {
   const { data, error } = await supabase.from("products").select("*")
   if (error) {
@@ -13,18 +13,18 @@ export const getProducts = async (): Promise<IProduct[]> => {
   return data || []
 }
 
-// ✅ Add a product
+//  Add a product
 export const addProduct = async (product: IProduct) => {
   const { data, error } = await supabase.from("products").insert([product])
   if (error) {
   console.error("Supabase error in getProducts:", error);
-  throw new Error(error.message); // throw a string, not the object
+  throw new Error(error.message); 
   }
 
   return data
 }
 
-// ✅ Edit product
+// Edit product
 export const editProduct = async (product: IProduct) => {
   const { data, error } = await supabase
     .from("products")
@@ -38,7 +38,7 @@ export const editProduct = async (product: IProduct) => {
   return data
 }
 
-// ✅ Delete product
+// Delete product
 export const deleteProduct = async (product_id: string) => {
   const { data, error } = await supabase
   .from("products")
