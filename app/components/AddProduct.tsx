@@ -6,35 +6,34 @@ import { FormEventHandler, useState } from "react";
 import { addProduct } from "../api/products/products";
 import { useRouter } from "next/navigation";
 
-const AddProduct = () => {
+const AddProduct = ({ refreshProducts }: { refreshProducts: () => void }) => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [productName, setProductName] = useState<string>("");
   const [supplier, setSupplier] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [quantity, setQuantity] = useState<number>(0);
+  const [price, setPrice] = useState<number | string>("");
+  const [quantity, setQuantity] = useState<number | string>("");
 
-const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
-  e.preventDefault();
-  try {
-    await addProduct({
-      product_name: productName,
-      supplier,
-      price,
-      quantity,
-    });
+  const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    try {
+      await addProduct({
+        product_name: productName,
+        supplier,
+              price: Number(price),
+              quantity: Number(quantity),      });
 
-    setProductName("");
-    setSupplier("");
-    setPrice(0);
-    setQuantity(0);
-    setModalOpen(false);
-    router.refresh();
-  } catch (err: any) {
-    console.error("Add product failed:", err);
-    alert("Failed to add product: " + err.message);
-  }
-};
+      setProductName("");
+      setSupplier("");
+      setPrice(0);
+      setQuantity(0);
+      setModalOpen(false);
+      refreshProducts();
+    } catch (err: any) {
+      console.error("Add product failed:", err);
+      alert("Failed to add product: " + err.message);
+    }
+  };
 
 
   return (
@@ -66,14 +65,14 @@ const handleSubmitNewProduct: FormEventHandler<HTMLFormElement> = async (e) => {
             />
             <input
               value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              onChange={(e) => setPrice(e.target.value)}
               type="number"
               placeholder="Price"
               className="input input-bordered w-full"
             />
             <input
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={(e) => setQuantity(e.target.value)}
               type="number"
               placeholder="Quantity"
               className="input input-bordered w-full"

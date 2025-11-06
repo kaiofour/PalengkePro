@@ -4,9 +4,10 @@ import Product from "./Product";
 
 interface ProductListProps {
   products: IProduct[];
+  refreshProducts: () => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const ProductList: React.FC<ProductListProps> = ({ products, refreshProducts }) => {
   return (
     <div className="overflow-x-auto flex items-center" >
       <table className="table w-full">
@@ -21,7 +22,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <Product key={product.product_id} product={product} />
+            <Product key={product.product_id} product={product} refreshProducts={refreshProducts} />
           ))}
         </tbody>
       </table>

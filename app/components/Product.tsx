@@ -9,17 +9,18 @@ import { deleteProduct, editProduct } from "../api/products/products";
 
 interface ProductProps {
   product: IProduct;
+  refreshProducts: () => void;
 }
 
-const Product: React.FC<ProductProps> = ({ product }) => {
+const Product: React.FC<ProductProps> = ({ product, refreshProducts }) => {
   const router = useRouter();
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDeleted, setOpenModalDeleted] = useState<boolean>(false);
 
   const [productName, setProductName] = useState(product.product_name);
   const [supplier, setSupplier] = useState(product.supplier);
-  const [price, setPrice] = useState(product.price);
-  const [quantity, setQuantity] = useState(product.quantity);
+  const [price, setPrice] = useState<number | string>(product.price);
+  const [quantity, setQuantity] = useState<number | string>(product.quantity);
 
   const handleSubmitEditProduct: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -27,17 +28,17 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       product_id: product.product_id,
       product_name: productName,
       supplier,
-      price,
-      quantity,
+      price: Number(price),
+      quantity: Number(quantity),
     });
     setOpenModalEdit(false);
-    router.refresh();
+    refreshProducts();
   };
 
   const handleDeleteProduct = async (id: string) => {
     await deleteProduct(id);
     setOpenModalDeleted(false);
-    router.refresh();
+    refreshProducts();
   };
 
   return (
@@ -73,14 +74,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               />
               <input
                 value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
+                onChange={(e) => setPrice(e.target.value)}
                 type="number"
                 placeholder="Price"
                 className="input input-bordered w-full"
               />
               <input
                 value={quantity ?? ""}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                onChange={(e) => setQuantity(e.target.value)}
                 type="number"
                 placeholder="Quantity"
                 className="input input-bordered w-full"
@@ -101,7 +102,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         <Modal modalOpen={openModalDeleted} setModalOpen={setOpenModalDeleted}>
           <h3 className="text-lg">Are you sure you want to delete this product?</h3>
           <div className="modal-action">
-            <button onClick={() => handleDeleteProduct(product.product_id)} className="btn">
+            <button onClick={() => handleDeleteProduct(product.product_id as string)} className="btn">
               Yes
             </button>
           </div>
