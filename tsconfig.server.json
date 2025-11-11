@@ -4,7 +4,11 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "noEmit": false
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": ["websocket-server.ts"]
+  "include": ["websocket-server.ts", "app/api/products/products.ts"]
 }

@@ -1,5 +1,5 @@
 // api/products.ts
-import { supabase } from "@/lib/supabaseClient"
+import { supabase } from "../../../lib/supabaseClient"
 import { IProduct } from "@/types/product"
 
 //  Get all products
