@@ -1,54 +1,49 @@
 import { WebSocketServer } from 'ws';
-import { getProducts } from './app/api/products/products';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// 1. Setup Supabase (Using the keys you provided)
+const supabaseUrl = "https://jhbbadkrniujdizfyzez.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoYmJhZGtybml1amRpemZ5emV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTc5ODUsImV4cCI6MjA3MzQ5Mzk4NX0.G146vBMCVIQWRJoES3rNZjpb-q3e6gU_-YGyTd_sLgw";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Supabase URL and anonymous key are required.");
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-
+// 2. Start WebSocket Server on Port 8080
 const wss = new WebSocketServer({ port: 8080 });
 
-wss.on('connection', ws => {
-  console.log('Client connected');
+console.log('WebSocket server started on port 8080');
 
-  ws.on('message', message => {
-    console.log(`Received message: ${message}`);
-    // Optionally, send a response back to the client
-    ws.send(`Server received: ${message}`);
-  });
+wss.on('connection', ws => {
+  console.log('Client connected from PalengKita');
+
+  // 3. Send data immediately when they connect
+  sendProductData(ws);
+
+  // 4. Send updates every 3 seconds (Polling)
+  const interval = setInterval(() => sendProductData(ws), 3000);
 
   ws.on('close', () => {
     console.log('Client disconnected');
-  });
-
-  ws.on('error', error => {
-    console.error('WebSocket error:', error);
-  });
-
-  // Example: Send product data every 5 seconds
-  const sendProductData = async () => {
-    try {
-      const products = await getProducts();
-      ws.send(JSON.stringify(products));
-      console.log('Sent product data to client');
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
-
-  const interval = setInterval(sendProductData, 5000);
-
-  // Clear the interval when the client disconnects
-  ws.on('close', () => {
     clearInterval(interval);
   });
 });
 
-console.log('WebSocket server started on port 8080');
+async function sendProductData(ws: any) {
+  try {
+    // Fetch products from Supabase
+    const { data: products, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('product_name', { ascending: true });
+
+    if (error) {
+      console.error('Supabase Error:', error.message);
+      return;
+    }
+
+    // Send to Laravel Client
+    if (products) {
+      ws.send(JSON.stringify(products));
+    }
+  } catch (err) {
+    console.error('Server Error:', err);
+  }
+}
