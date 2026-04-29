@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { getProductsByIds } from "@/lib/services/crudService";
 
 export async function POST(req: NextRequest) {
   const { ids } = await req.json();
@@ -8,14 +8,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json([], { status: 200 });
   }
 
-  const { data, error } = await supabase
-    .from("products")
-    .select("product_id, product_name")
-    .in("product_id", ids);
-
-  if (error) {
+  try {
+    const data = await getProductsByIds(ids);
+    return NextResponse.json(data);
+  } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  return NextResponse.json(data ?? []);
 }

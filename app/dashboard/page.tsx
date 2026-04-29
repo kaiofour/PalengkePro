@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import type { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { getUser, signOut } from "@/lib/services/authService";
+import { getProducts } from "@/lib/services/crudService";
 import AddProduct from "../components/AddProduct";
 import ProductList from "../components/ProductList";
 import { IProduct } from "@/types/product";
@@ -14,31 +15,30 @@ export default function Dashboard() {
   const router = useRouter();
 
   const refreshProducts = async () => {
-    const { data: fetchedProducts, error } = await supabase.from("products").select("*");
-
-    if (error) {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error: any) {
       console.error("Error fetching products:", error.message);
-    } else {
-      setProducts(fetchedProducts as IProduct[]);
     }
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
+    const init = async () => {
+      const currentUser = await getUser();
+      if (currentUser) {
+        setUser(currentUser);
         await refreshProducts();
       } else {
-        router.push('/login');
+        router.push("/login");
       }
     };
-    getUser();
+    init();
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
+    await signOut();
+    router.push("/login");
   };
 
   return (
@@ -58,13 +58,11 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Add product button & form */}
       <AddProduct refreshProducts={refreshProducts} />
 
-      {/* Product list */}
       <div className="mt-6">
         {products && products.length > 0 ? (
-          <ProductList products={products as IProduct[]} refreshProducts={refreshProducts} />
+          <ProductList products={products} refreshProducts={refreshProducts} />
         ) : (
           <p className="text-gray-500">No products found.</p>
         )}

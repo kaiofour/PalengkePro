@@ -10,5 +10,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["websocket-server.ts", "app/api/products/products.ts"]
+  "include": ["websocket-server.ts", "lib/services/crudService.ts"]
 }

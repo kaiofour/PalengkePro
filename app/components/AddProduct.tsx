@@ -3,7 +3,7 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "./Modal";
 import { FormEventHandler, useState } from "react";
-import { addProduct } from "../api/products/products";
+import { addProduct } from "@/lib/services/crudService";
 import { useRouter } from "next/navigation";
 
 const AddProduct = ({ refreshProducts }: { refreshProducts: () => void }) => {

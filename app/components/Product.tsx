@@ -5,7 +5,7 @@ import { FormEventHandler, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { deleteProduct, editProduct } from "../api/products/products";
+import { deleteProduct, editProduct } from "@/lib/services/crudService";
 
 interface ProductProps {
   product: IProduct;

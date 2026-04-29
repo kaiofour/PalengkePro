@@ -1,30 +1,26 @@
 "use client";
 
-import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { signIn } from "@/lib/services/authService";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (!error) {
-      router.push('/dashboard');
-    } else {
+    try {
+      await signIn(email, password);
+      router.push("/dashboard");
+    } catch (error) {
       console.error(error);
-      alert('Error signing in');
+      alert("Error signing in");
     }
   };
 
   return (
-    
     <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold text-center">Inventory System Sign-In</h1><br />
@@ -33,10 +29,7 @@ export default function LoginPage() {
           onSubmit={handleSignIn}
         >
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
               Email
             </label>
             <input
@@ -49,10 +42,7 @@ export default function LoginPage() {
             />
           </div>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
