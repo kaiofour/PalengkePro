@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { FiLogOut, FiSearch, FiRefreshCw, FiPackage } from "react-icons/fi";
+import { FiLogOut, FiSearch, FiPackage } from "react-icons/fi";
 import { getUser, signOut } from "@/lib/services/authService";
 import { getProducts } from "@/lib/services/crudService";
 import AddProduct from "../components/AddProduct";
@@ -113,17 +113,7 @@ export default function Dashboard() {
             />
           </div>
 
-          <div className="flex gap-3">
-            <button
-              onClick={refreshProducts}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 font-medium text-white transition hover:bg-white/10"
-            >
-              <FiRefreshCw size={18} />
-              Refresh
-            </button>
-
-            <AddProduct refreshProducts={refreshProducts} />
-          </div>
+          <AddProduct refreshProducts={refreshProducts} />
         </div>
 
         <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
