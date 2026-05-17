@@ -56,9 +56,9 @@ const Product: React.FC<ProductProps> = ({ product, refreshProducts }) => {
       <tr className="border-b border-white/5 transition hover:bg-white/[0.03]">
         <td className="px-4 py-4 font-medium text-white">{product.product_name}</td>
         <td className="px-4 py-4 text-white/70">{product.supplier}</td>
-        <td className="px-4 py-4 text-white">₱{Number(product.price).toLocaleString()}</td>
+        <td className="px-4 py-4 text-right text-white">₱{Number(product.price).toLocaleString()}</td>
         <td className="px-4 py-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
             <span className="text-white">{product.quantity}</span>
             {Number(product.quantity) === 0 ? (
               <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-xs font-medium text-red-400">
@@ -76,7 +76,7 @@ const Product: React.FC<ProductProps> = ({ product, refreshProducts }) => {
           </div>
         </td>
         <td className="px-4 py-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => setOpenModalEdit(true)}
               className="rounded-xl bg-blue-500/15 p-3 text-blue-400 transition hover:bg-blue-500/25"
