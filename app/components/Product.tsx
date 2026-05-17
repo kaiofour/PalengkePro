@@ -57,7 +57,24 @@ const Product: React.FC<ProductProps> = ({ product, refreshProducts }) => {
         <td className="px-4 py-4 font-medium text-white">{product.product_name}</td>
         <td className="px-4 py-4 text-white/70">{product.supplier}</td>
         <td className="px-4 py-4 text-white">₱{Number(product.price).toLocaleString()}</td>
-        <td className="px-4 py-4 text-white">{product.quantity}</td>
+        <td className="px-4 py-4">
+          <div className="flex items-center gap-2">
+            <span className="text-white">{product.quantity}</span>
+            {Number(product.quantity) === 0 ? (
+              <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-xs font-medium text-red-400">
+                Out of stock
+              </span>
+            ) : Number(product.quantity) <= 10 ? (
+              <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-medium text-amber-400">
+                Low stock
+              </span>
+            ) : (
+              <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-medium text-emerald-400">
+                In stock
+              </span>
+            )}
+          </div>
+        </td>
         <td className="px-4 py-4">
           <div className="flex items-center gap-3">
             <button
