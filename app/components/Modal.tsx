@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 interface ModalProps {
   modalOpen: boolean;
   setModalOpen: (open: boolean) => boolean | void;
@@ -5,9 +10,15 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ modalOpen, setModalOpen, children }) => {
-  if (!modalOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !modalOpen) return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
       <div className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-[#0f172a] p-6 shadow-2xl">
         <button
@@ -18,7 +29,8 @@ const Modal: React.FC<ModalProps> = ({ modalOpen, setModalOpen, children }) => {
         </button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
