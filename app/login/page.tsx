@@ -39,7 +39,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_0_40px_rgba(0,0,0,0.25)] backdrop-blur">
           <div className="mb-8 text-center">
-            <p className="mb-2 text-xs font-medium uppercase tracking-[0.28em] text-indigo-300">
+            <p className="mb-2 text-xs font-medium tracking-[0.28em] text-indigo-300">
               PalengkePro
             </p>
             <h1 className="text-3xl font-bold tracking-tight">Inventory System Login</h1>

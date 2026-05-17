@@ -69,7 +69,7 @@ export default function Dashboard() {
         <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_40px_rgba(0,0,0,0.25)] backdrop-blur">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="mb-2 text-xs font-medium uppercase tracking-[0.28em] text-indigo-300">
+              <p className="mb-2 text-xs font-medium tracking-[0.28em] text-indigo-300">
                 PalengkePro
               </p>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
